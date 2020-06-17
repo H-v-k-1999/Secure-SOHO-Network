@@ -1,0 +1,54 @@
+Customer
+
+enable
+configure terminal
+hostname Customer
+int f0/0
+ip address 172.16.1.1 255.255.255.0
+no shutdown
+
+int s0/0/0
+ip address 203.1.1.2 255.255.255.0
+no shutdown
+
+exit
+exit
+configure terminal
+ip dhcp exculded-address 172.16.1.1 172.16.1.99
+ip dhcp pool Internal-LAN
+network 172.16.1.0 255.255.255.0
+default-router 172.16.1.1
+dns-server 8.8.8.8
+exit
+
+ip route 0.0.0.0 0.0.0.0 203.1.1.1
+int f0/0
+ip nat inside
+exit
+int s0/0/0
+ip nat outside
+exit
+access-list 100 permit ip any any
+ip nat inside source list 100 interface s0/0/0 overload
+
+show ip nat translations
+clear ip nat translations *
+
+ISP
+
+enable
+configure terminal
+hostname ISP
+int s0/0/0
+ip address 203.1.1.1 255.255.255.0
+no shutdown
+
+int f0/0
+ip address 8.8.8.1
+no shutdown
+
+en
+conf t
+ip route 172.16.1.0 255.255.255.0 203.1.1.2
+exit
+show ip route
