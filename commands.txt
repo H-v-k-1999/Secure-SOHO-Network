@@ -1,4 +1,4 @@
-Customer
+#Customer Router
 
 enable
 configure terminal
@@ -34,7 +34,7 @@ ip nat inside source list 100 interface s0/0/0 overload
 show ip nat translations
 clear ip nat translations *
 
-ISP
+#ISP Router
 
 enable
 configure terminal
